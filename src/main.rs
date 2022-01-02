@@ -3,7 +3,8 @@ mod args;
 use args::Args;
 
 mod image_process;
-use image_process::{find_image_from_path, standardise_size};
+use image::GenericImageView;
+use image_process::{find_image_from_path, standardise_size, FloatingImage, combine_images};
 
 enum ImageDataErrors {
     DifferentImageFormats,
@@ -20,6 +21,9 @@ fn main() ->  Result<(), ImageDataErrors>{
     }
 
     let (image1, image2) = standardise_size(image1, image2);
+    let mut output = FloatingImage::new(image1.width(), image1.height(), args.output);
+    let combined_images = combine_images(image1, image2);
+
     Ok(());
     // println!("{:?}", args);
 }
